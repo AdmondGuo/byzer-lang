@@ -282,33 +282,33 @@ object HDFSOperatorV2 {
         br = new BufferedReader(new InputStreamReader(fs.open(src), charset))
         line = br.readLine()
 
-          var count = 1
-          while (line != null) {
+        var count = 1
+        while (line != null) {
 
-            if (header && count == 1) {
-              dos.write((line + "\n").getBytes(charset))
-              line = br.readLine()
-            }
-
-            if (count >= skipFirstNLines) {
-              dos.write((line + "\n").getBytes(charset))
-            }
-            count += 1
+          if (header && count == 1) {
+            dos.write((line + "\n").getBytes(charset))
             line = br.readLine()
           }
-        } finally {
-          if (br != null) br.close()
-          if (null != dos) {
-            try {
-              dos.close()
-            } catch {
-              case ex: Exception =>
-                println("close exception")
-            }
-            dos.close()
+
+          if (count >= skipFirstNLines) {
+            dos.write((line + "\n").getBytes(charset))
           }
+          count += 1
+          line = br.readLine()
+        }
+      } finally {
+        if (br != null) br.close()
+        if (null != dos) {
+          try {
+            dos.close()
+          } catch {
+            case ex: Exception =>
+              println("close exception")
+          }
+          dos.close()
         }
       }
-      outPath
     }
+    outPath
+  }
 }
